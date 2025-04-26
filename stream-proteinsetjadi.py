@@ -14,7 +14,7 @@ def hitung_protein(berat, aktivitas):
 if berat_badan:
     kebutuhan = hitung_protein(berat_badan, aktivitas)
     st.subheader("Kebutuhan protein harianmu: **{kebutuhan} gram**")
-    
+
 def hitung_kebutuhan_protein(umur, tinggi_cm, berat_kg, jenis_kelamin):
     """
     Menghitung kebutuhan protein harian (gram per hari) berdasarkan:
@@ -57,3 +57,23 @@ jenis_kelamin = input("Masukkan jenis kelamin (L/P): ")
 hasil = hitung_kebutuhan_protein(umur, tinggi, berat, jenis_kelamin)
 
 print(f"Kebutuhan protein harian Anda diperkirakan: {hasil} gram")
+
+# Tombol Submit
+if st.button("Submit"):
+    kebutuhan_aktivitas = hitung_protein(berat_badan, aktivitas)
+    kebutuhan_umur_gender = hitung_kebutuhan_protein(usia, tinggi, berat_badan, jenis_kelamin)
+
+    st.subheader(f"Kebutuhan protein berdasarkan aktivitas: *{kebutuhan_aktivitas} gram*")
+    st.subheader(f"Kebutuhan protein berdasarkan usia dan jenis kelamin: *{kebutuhan_umur_gender} gram*")
+
+    # Visualisasi dengan Plotly
+    fig = go.Figure(data=[
+        go.Bar(name='Kebutuhan Protein', x=["Aktivitas", "Usia & Gender"], 
+               y=[kebutuhan_aktivitas, kebutuhan_umur_gender],
+               marker_color=["skyblue", "lightgreen"])
+    ])
+    fig.update_layout(title="Perbandingan Kebutuhan Protein Harian",
+                      yaxis_title="Protein (gram)",
+                      xaxis_title="Kategori")
+
+    st.plotly_chart(fig)
